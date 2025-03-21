@@ -1,4 +1,53 @@
-const tcpServer = require("../../bin/tcp-server");
+ //const tcpServer = require("../../bin/tcp-server");
+ //const xyData = tcpServer.xyDATA;
+
+//const { xyDATA } = require("../../bin/tcp-server");
+// const host =window.location.host
+
+// var equipmentId = window.location.pathname.split("/")[2] || "123456"
+
+// const socket = new WebSocket('ws://'+host);
+
+// // 如果建立连接
+// socket.onopen=function () {
+//   console.log("websocket connect!")
+//   var data = JSON.stringify({equipmentId:equipmentId})
+//   socket.send(data)
+// }
+
+// // 监听接收数据
+// socket.onmessage=function (msg) {
+//   console.log("-->",msg.data)
+//   try {
+//     // 将JSON字符串反转为JSON对象npm start
+//     var data = JSON.parse(msg.data)
+//     data.forEach(function (d) {
+//       //将接收到的数据 更新到echart图表里
+//       updateMyChart(d.time,d.value)
+//     });
+//   } catch (error) {
+//     console.log('error:',error)
+//   }
+// }
+
+function getXYData() {
+  var httpRequest = null;
+  if (window.XMLHttpRequest) { // Mozilla, Safari, IE7+ ...
+      httpRequest = new XMLHttpRequest();
+  } else if (window.ActiveXObject) { // IE 6 and older
+      httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  httpRequest.onreadystatechange = () => {
+      if (httpRequest.readyState === 4 && httpRequest.status === 200) {
+          var xyDATA = JSON.parse(httpRequest.responseText);
+          updateMyChart1(xyDATA);
+          updateMyChart2(xyDATA);
+      }
+  };
+  httpRequest.open('GET', '/xyDATA');
+  httpRequest.send();
+}
 
 
 // 基于准备好的 DOM，初始化第一个 ECharts 实例
@@ -26,18 +75,18 @@ var option1 = {
 // 使用刚指定的配置项和数据显示第一个图表
 myChart1.setOption(option1);
 
-setInterval(function () {
-    var time = new Date();
-    var xinglv = tcpServer.xyDATA[1];
-    option1.xAxis.data.push(time.getHours() +":"+ time.getMinutes() + ':' + time.getSeconds());//给X轴 插入时间数据
-    option1.series[0].data.push(xinglv);//给Y轴 插入心率数据
-    // 如果数据超过6个，把第一个数据删除。
-    if (option1.xAxis.data.length > 6) {
-        option1.xAxis.data.shift();
-        option1.series[0].data.shift();
-    }
-    myChart1.setOption(option1);
-}, 1000);
+function updateMyChart1(xyDATA) {
+  var time = new Date();
+  var xinglv = xyDATA[0];
+  option1.xAxis.data.push(time.getHours() + ":" + time.getMinutes() + ':' + time.getSeconds());
+  option1.series[0].data.push(xinglv);
+
+  if (option1.xAxis.data.length > 8) {
+      option1.xAxis.data.shift();
+      option1.series[0].data.shift();
+  }
+  myChart1.setOption(option1);
+}
 
 // 基于准备好的 DOM，初始化第二个 ECharts 实例
 var myChart2 = echarts.init(document.getElementById('chart2'));
@@ -64,19 +113,18 @@ var option2 = {
 // 使用刚指定的配置项和数据显示第二个图表
 myChart2.setOption(option2);
 
-setInterval(function () {
-    var xueyang = tcpServer.xyDATA[0];
-    var time = new Date();
-    option2.xAxis.data.push(time.getHours() +":"+time.getMinutes() + ':' + time.getSeconds());//给X轴 插入时间数据
-    option2.series[0].data.push(xueyang);//给Y轴 插入温度数据
+function updateMyChart2(xyDATA) {
+  var xueyang = xyDATA[1];
+  var time = new Date();
+  option2.xAxis.data.push(time.getHours() + ":" + time.getMinutes() + ':' + time.getSeconds());
+  option2.series[0].data.push(xueyang);
 
-    // 如果数据超过30个，把第一个数据删除。
-    if (option2.xAxis.data.length > 6) {
-        option2.xAxis.data.shift();
-        option2.series[0].data.shift();
-    }
-    myChart2.setOption(option2);
-}, 1000);
+  if (option2.xAxis.data.length > 8) {
+      option2.xAxis.data.shift();
+      option2.series[0].data.shift();
+  }
+  myChart2.setOption(option2);
+}
 
 
 
@@ -219,9 +267,13 @@ function getData() {
 }
 
 // 马上使用一次。
-getData()
+getData();
+getXYData();
+
+
 
 // 每一秒轮询一次
 setInterval(() => {
-  getData()
+  getData();
+  getXYData();
 }, 1000);

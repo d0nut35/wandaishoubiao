@@ -4,7 +4,7 @@ const PORT = "9002"
 const equipmentArray = []
 const TIMEOUT = 30*1000; // 30秒没接收到数据就断开连接、
 const websocket = require('./websocket.js')
-var xyDATA=[];
+let xyDATA=[];
 
 //创建服务器对象
 const server = net.createServer((socket)=>{

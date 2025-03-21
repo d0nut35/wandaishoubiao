@@ -35,5 +35,9 @@ router.get('/equipmentArray',function(req, res, next) {
   
 });
 
+// 获取 xyDATA 数据
+router.get('/xyDATA', function(req, res, next) {
+  res.json(tcpServer.xyDATA);
+});
 
 module.exports = router;
