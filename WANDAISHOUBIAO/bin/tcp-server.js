@@ -2,7 +2,10 @@
 const net = require('net')
 const PORT = "9002"
 const equipmentArray = []
-const TIMEOUT = 30*1000; // 30秒没接收到数据就断开连接
+const TIMEOUT = 30*1000; // 30秒没接收到数据就断开连接、
+const websocket = require('./websocket.js')
+var xyDATA=[];
+
 //创建服务器对象
 const server = net.createServer((socket)=>{
   //connect
@@ -21,6 +24,19 @@ const server = net.createServer((socket)=>{
 			socket.addr = addr
 			addEquipment(socket)
     }
+	else{
+		const message1 =data.toString();
+		const parts1 =message1.split('|');
+		if (parts1.length === 2) {
+            const xPart = parts1[0]; // 去掉 'X'
+            const yPart = parts1[1].substring(1); // 去掉 'Y'
+            xyDATA[0]=parseInt(xPart);
+            xyDATA[1]=parseInt(yPart);
+            console.log('Received X value:', xyDATA[0]);
+            console.log('Received Y value:', xyDATA[1]);
+        }
+		websocket.sendData(socket.id,xyDATA);
+	}
   })
 
   // close
@@ -121,5 +137,6 @@ module.exports={
 	addEquipment:addEquipment,
 	deleteEquipment:deleteEquipment,
 	findEquipment:findEquipment,
-	sentCommand:sentCommand
+	sentCommand:sentCommand,
+	xyDATA:xyDATA
 }

@@ -1,3 +1,86 @@
+const tcpServer = require("../../bin/tcp-server");
+
+
+// 基于准备好的 DOM，初始化第一个 ECharts 实例
+var myChart1 = echarts.init(document.getElementById('chart1'));
+
+// 指定第一个图表的配置项和数据
+var option1 = {
+    title: {
+        text: '心率'
+    },
+    xAxis: {
+        type: 'category',
+        data: []
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [{
+        data: [],
+        type: 'line',
+        smooth: true
+    }]
+};
+
+// 使用刚指定的配置项和数据显示第一个图表
+myChart1.setOption(option1);
+
+setInterval(function () {
+    var time = new Date();
+    var xinglv = tcpServer.xyDATA[1];
+    option1.xAxis.data.push(time.getHours() +":"+ time.getMinutes() + ':' + time.getSeconds());//给X轴 插入时间数据
+    option1.series[0].data.push(xinglv);//给Y轴 插入心率数据
+    // 如果数据超过6个，把第一个数据删除。
+    if (option1.xAxis.data.length > 6) {
+        option1.xAxis.data.shift();
+        option1.series[0].data.shift();
+    }
+    myChart1.setOption(option1);
+}, 1000);
+
+// 基于准备好的 DOM，初始化第二个 ECharts 实例
+var myChart2 = echarts.init(document.getElementById('chart2'));
+
+// 指定第二个图表的配置项和数据
+var option2 = {
+    title: {
+        text: '血氧'
+    },
+    xAxis: {
+        type: 'category',
+        data: []
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [{
+        data: [],
+        type: 'line',
+        smooth: true
+    }]
+};
+
+// 使用刚指定的配置项和数据显示第二个图表
+myChart2.setOption(option2);
+
+setInterval(function () {
+    var xueyang = tcpServer.xyDATA[0];
+    var time = new Date();
+    option2.xAxis.data.push(time.getHours() +":"+time.getMinutes() + ':' + time.getSeconds());//给X轴 插入时间数据
+    option2.series[0].data.push(xueyang);//给Y轴 插入温度数据
+
+    // 如果数据超过30个，把第一个数据删除。
+    if (option2.xAxis.data.length > 6) {
+        option2.xAxis.data.shift();
+        option2.series[0].data.shift();
+    }
+    myChart2.setOption(option2);
+}, 1000);
+
+
+
+
 
 // 获取选中设备的信息
 function getEquipmentInfo() {

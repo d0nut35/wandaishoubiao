@@ -8,6 +8,7 @@ var app = require('../app');
 var debug = require('debug')('myapp:server');
 var http = require('http');
 var tcpServer = require('./tcp-server.js');
+let websocket = require('./websocket.js');
 
 /**
  * Get port from environment and store in Express.
@@ -21,6 +22,8 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+//与websocket共用http端口
+websocket.init(server);
 
 /**
  * Listen on provided port, on all network interfaces.

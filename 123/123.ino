@@ -4,7 +4,7 @@
 const char* ssid = "123";
 const char* password = "12345678";
 
-const char* host = "43.139.43.195";
+const char* host = "172.20.10.9";
 const int port = 9002;//demo1 tcp 使用 9002端口
 
 const char* id = "abc";
@@ -65,7 +65,11 @@ void loop() {
       //若没收到TCP数据，每隔一段时间打印并发送tick值
       Serial.print("tem:");
       Serial.println(tick);
-      client.print(tick);
+      //client.print(tick);
+      client.print("X");
+      client.print(20 + random(0, 10));
+      client.print("|Y");
+      client.print(200 + random(0, 10));
       tick++;
       delay(1000);
     }
