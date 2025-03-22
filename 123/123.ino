@@ -4,10 +4,10 @@
 const char* ssid = "123";
 const char* password = "12345678";
 
-const char* host = "172.20.10.9";
+const char* host = "43.139.43.195";
 const int port = 9002;//demo1 tcp 使用 9002端口
 
-const char* id = "abc";
+const char* id = "mhlovedzq";
 int tick = 1000;
 
 WiFiClient client;
