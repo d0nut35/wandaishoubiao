@@ -68,7 +68,12 @@ var option1 = {
     series: [{
         data: [],
         type: 'line',
-        smooth: true
+        smooth: true,
+        // 添加 label 配置，显示数据
+        label: {
+          show: true,
+          position: 'top' // 数据标签显示在点的上方
+      }
     }]
 };
 
@@ -106,7 +111,12 @@ var option2 = {
     series: [{
         data: [],
         type: 'line',
-        smooth: true
+        smooth: true,
+        // 添加 label 配置，显示数据
+        label: {
+          show: true,
+          position: 'top' // 数据标签显示在点的上方
+      }
     }]
 };
 
