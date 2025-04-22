@@ -80,18 +80,18 @@ var option1 = {
 // 使用刚指定的配置项和数据显示第一个图表
 myChart1.setOption(option1);
 
-let lastUpdateTime1 = 0; // 记录上次更新时间戳
+let lastUpdateTime = 0; // 记录上次更新时间戳
 
 function updateMyChart1(xyDATA) {
-  const currentTime1 = Date.now();
-  const timeDiff1 = currentTime1 - lastUpdateTime1;
+  const currentTime = Date.now();
+  const timeDiff = currentTime - lastUpdateTime;
   
   // 仅当时间间隔达到10秒时执行更新
-  if (timeDiff1 >= 10000) {
-    lastUpdateTime1 = currentTime1; // 更新最后更新时间
+  if (timeDiff >= 10000) {
+    lastUpdateTime = currentTime; // 更新最后更新时间
     
     var xinglv = xyDATA[0];
-    const time = new Date(currentTime1); // 使用记录时刻的时间
+    const time = new Date(currentTime); // 使用记录时刻的时间
     const formattedTime = time.toLocaleTimeString('chinese', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
     
     option1.xAxis.data.push(formattedTime);
@@ -101,7 +101,7 @@ function updateMyChart1(xyDATA) {
       option1.xAxis.data.shift();
       option1.series[0].data.shift();
     }
-    myChart1.setOption(option2);
+    myChart1.setOption(option1);
   }
 
 
@@ -151,15 +151,17 @@ var option2 = {
 // 使用刚指定的配置项和数据显示第二个图表
 myChart2.setOption(option2);
 
-let lastUpdateTime = 0; // 记录上次更新时间戳
+//let lastUpdateTime = 0; // 记录上次更新时间戳
+let lastUpdateTime2 = 0;
+
 
 function updateMyChart2(xyDATA) {
 
   const currentTime = Date.now();
-  const timeDiff = currentTime - lastUpdateTime;
+  const timeDiff = currentTime - lastUpdateTime2;
 
   if (timeDiff >= 10000) {
-    lastUpdateTime = currentTime; // 更新最后更新时间
+    lastUpdateTime2 = currentTime; // 更新最后更新时间
     
     const xueyang = xyDATA[1];
     const time = new Date(currentTime); // 使用记录时刻的时间

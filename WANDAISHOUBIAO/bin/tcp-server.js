@@ -71,7 +71,7 @@ server.listen({port: PORT,host: '0.0.0.0'}, () => {
   console.log('demo1 TCP服务器 启动：', server.address())
 })
 
-// 给列表添加设备
+// 给列表添加设备 
 function addEquipment(socket) {
 	// 先从列表删除旧的同名连接
 	deleteEquipment(socket.id,socket.addr)
