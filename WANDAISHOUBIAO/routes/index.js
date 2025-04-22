@@ -40,4 +40,29 @@ router.get('/xyDATA', function(req, res, next) {
   res.json(tcpServer.xyDATA);
 });
 
+// // 获取某设备的历史数据
+// // GET /history/123456 取得设备id为12356的数据。
+// router.get('/history/:id', function(req, res, next) {
+//   mongodb.find({id:req.params.id},(err,docs)=>{
+//     if(err){
+//       res.send([])
+//       console.log(err)
+//     }
+//     else{
+//       let result = []
+//       docs.forEach( (doc) => {
+//         result.push({
+//           time:moment(doc.createdAt).format('mm:ss'),
+//           value:doc.data
+//         })
+//       });
+//       result.reverse()
+      
+//       res.send(result)
+//     }
+    
+//   })
+// });
+
+
 module.exports = router;
